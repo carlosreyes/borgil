@@ -135,7 +135,7 @@ module.exports = function () {
     };
 
     function findFeeds(cmd, callback) {
-        var args = cmd.args.match(/^\S+(?:\s+("[^"]+"|[\w-]+))?/);
+        var args = cmd.text.match(/^\S+(?:\s+("[^"]+"|[\w-]+))?/g);
 
         // fetch feeds from all channels (admin only)
         var all = args[1] == 'all' && plugin.config.get('admins', []).indexOf(cmd.nick) > -1;
@@ -188,8 +188,13 @@ module.exports = function () {
 
         case 'add':
             // Feed names can contain spaces as long as they are wrapped in double quotes.
+<<<<<<< HEAD
             var addArgs = args.match(/^("[^"]+"|[\w-]+)\s+(https?:\/\/\S+\.\S+)(?:\s+(\w+))?/);
 
+=======
+            var addArgs = cmd.args.match(/(https?:\/\/\S+\.\S+)|"(.+)"|(\w+)/g);
+  
+>>>>>>> 8b965125d041ac10f7ce8ade9fbf1a042eb70eaa
             if (!addArgs) {
                 cmd.transport.say(cmd.replyto, 'Usage: .rss add <feed name> <feed url> [<color>]');
                 break;
