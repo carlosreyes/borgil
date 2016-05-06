@@ -1,5 +1,3 @@
-## Caution: the developer of this project has ghosted leaving this project in an unworkable state.
-
 # Borgil, the multi-purpose messaging bot
 
 Borgil is a messaging bot that can talk over multiple network protocols.
@@ -162,3 +160,25 @@ Bug reports are welcome; just submit them to the
 Borgil has unit tests, using [Jasmine](https://jasmine.github.io).
 Adding unit tests is a great way to demonstrate bugs or define new features.
 Tests live in the `/spec` folder, and are run with `jasmine` or `npm test`.
+
+## Current plugins
+
+#### ddg-scraper
+`[.s, .search, .ddg, .duck] <query>` Replies with the first result of a DDG search for <query>.
+
+#### eightball
+`.8, .eight, .eightball` Replies with a random 8-ball response.
+
+#### sed
+`s/foo/bar` Mimicks the `sed` unix utility. Replaces foo with bar in a previous message.
+
+#### rss
+`.rss add <feed_name> <feed_url> [<color>]` Adds an RSS feed to the bot.
+`[.rss del, .rss delete, .rss rm, .rss remove] <feed_name>` Removes feed_name from the bot.
+`.rss list` Lists the bot's known RSS feeds.
+
+#### url
+Listens for urls, parses the title of the HTML page.
+
+#### youtube
+`[.yt, .youtube] <query>` Searches youtube for <query>, returns the first result and its metadata.
