@@ -12,12 +12,12 @@ module.exports = function () {
         var plugin = this;
         // DuckDuckGo has no public API for their syndicated search results.
         // So let's scrape the page! Of course this will break if they change their layout.
-        request.get('https://duckduckgo.com/html?q=' + cmd.args, function (err, res, body) {
+        request({method: 'GET', url: 'https://duckduckgo.com/html/?q=' + cmd.args }, function(err, res, body) {
             if (err) return plugin.error('Error searching DuckDuckGo:', err.message);
             if (res.statusCode != 200) return plugin.error('Got status code %d searching DuckDuckGo', res.statusCode);
 
             var $ = cheerio.load(body),
-                $result = $('div#links .web-result').not('.web-result-sponsored').first().find('a.large');
+                $result = $('div#links .result').not('.result--ad').first().find('a.result__a');
 
             if (!$result.length) {
                 return cmd.transport.say(cmd.replyto, 'No search results found for %s.', cmd.args);
@@ -30,6 +30,8 @@ module.exports = function () {
             var render_template = handlebars.compile(plugin.config.get('plugins.ddg-scraper.template', default_template));
             plugin.log('Echoing search result for %s:', cmd.args, data.url);
             cmd.transport.say(cmd.replyto, render_template(data));
+            
+            
         });
     });
 };
