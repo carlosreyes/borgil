@@ -11,6 +11,21 @@ var IRC = module.exports = function (bot, name, config) {
     var transport = this;
 
     this.irc = new irc.Client(config.host, config.nick, config.opts);
+    bot.log.info(config.opts);
+    if (config.opts.nickServ) {
+      this.irc.addListener('registered', function(message) {
+        bot.log.info('Identifying with Nickserv.');
+        transport.irc.say('NickServ', ('IDENTIFY ' + config.opts.pass));
+      });
+      this.irc.addListener('notice', function(from, to, text, message) {
+        if(message.nick === 'NickServ' && message.args[1].includes('You are successfully identified')){
+          config.opts.identifiedChannels.forEach(function (channel) {
+            bot.log.info('Joining channel: ', channel);
+            transport.irc.join(channel);
+          });
+        } 
+      });
+    }
 
     // Set up some log events.
     this.irc.conn.on('connect', function () {
